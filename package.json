@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/Heatzeker/PE_Tracker#readme",
   "dependencies": {
+    "ejs": "^3.1.8",
     "express": "^4.18.1",
     "path": "^0.12.7",
     "pg": "^8.7.3"
