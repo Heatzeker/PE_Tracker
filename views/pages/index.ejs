@@ -8,7 +8,7 @@
         <h1>PE tracker</h1>
         <% tasks.forEach(function(r) {%>
           <button id='<%= r.id %>'
-            onClick='javascript:logTask(<%= r.id %>);'><%= r.name %></button>
+            onClick='javascript:logTask(<%= r.id %>); timer();'><%= r.name %></button> <div class='timer<%= r.id %>' >00:00:00</div><br>
         <% }); %>
         <script>
           let currentTaskId = null;
@@ -24,7 +24,7 @@
                 user_id: -1,
                 students_id: -1,
                 tasks_id: id,
-                duration: "'+00:00:01'"
+                duration: "'"+timerRef[id-1].innerHTML+"'"
               })
             });
             const result = await response.json();
@@ -32,6 +32,40 @@
 
             currentTaskId = id;
           };
+
+          let [seconds,minutes,hours] = [0,0,0];
+          let timerRef = document.getElementsByTagName("DIV");
+          let int = null;
+          let cnt = 0;
+
+          function timer() {
+              if(cnt > 0) {
+                clearInterval(int);
+                cnt=0;  
+              } else {
+                int = setInterval(displayTimer,1000);
+                cnt+=1;
+              }
+            };
+
+              function displayTimer(){
+                
+                seconds++;
+                if(seconds == 60){
+                  seconds = 0;
+                  minutes++;
+                  if(minutes == 60){
+                    minutes = 0;
+                    hours++;
+                  };
+                };
+
+                let h = hours < 10 ? "0" + hours : hours;
+                let m = minutes < 10 ? "0" + minutes : minutes;
+                let s = seconds < 10 ? "0" + seconds : seconds;
+
+                timerRef[0].innerHTML = h + ":" + m + ":" + s;
+            };
         </script>
     </body>
 </html>

@@ -26,6 +26,7 @@ express()
             const locals = {
                 'tasks': (tasks) ? tasks.rows : null 
             };
+
             res.render('pages/index', locals);
             client.release();
         }
@@ -52,7 +53,6 @@ express()
 
                 const obs = await client.query(
                   `SELECT * FROM observations`);
-
                 const locals = {
                     'tables': (tables) ? tables.rows : null,
                     'obs': (obs) ? obs.rows : null
@@ -74,14 +74,13 @@ express()
             const duration = req.body.duration;
             const sql = `INSERT INTO observations(users_id, students_id, tasks_id, duration)
             VALUES (${usersId}, ${studentsId}, ${tasksId}, ${duration})
-            RETURNING id as new_id;`;
-            console.log(sql);
+            RETURNING id as new_id;`
+            console.log(sql)
             const sqlInsert = await client.query(
                 `INSERT INTO observations(users_id, students_id, tasks_id, duration)
                 VALUES (${usersId}, ${studentsId}, ${tasksId}, ${duration})
                 RETURNING id as new_id;`);
-            console.log(`Tracking task ${tasksId}`);
-
+      
             const result = {
               'response': (sqlInsert) ? (sqlInsert.rows[0]) : null
             };
@@ -96,4 +95,4 @@ express()
             res.send("Error: " + err);
         }
     })
-    .listen(PORT, () => console.log(`Listening on ${ PORT }`))
+    .listen(PORT, () => console.log(`Listening on ${ PORT }`));
